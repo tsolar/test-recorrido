@@ -31,10 +31,13 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'foreman'
+gem "foreman"
 
 gem "slim-rails"
 gem "react-rails"
+gem "simple_form"
+gem "kaminari"
+gem "httparty"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

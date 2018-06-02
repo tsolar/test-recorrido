@@ -1,0 +1,14 @@
+/p#notice = notice
+
+h1
+  = @bus_operator.official_name
+p
+  strong> Average rating:
+  = @bus_operator.average_rating
+p
+  strong> Description:
+  = @bus_operator.description
+
+=> link_to 'Edit', edit_bus_operator_path(@bus_operator)
+'|
+=< link_to 'Back', bus_operators_path

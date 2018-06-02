@@ -1,0 +1,8 @@
+h1
+  | Editar #{@bus_operator}
+
+== render 'form'
+
+=> link_to "Ver #{@bus_operator}", @bus_operator
+'|
+=< link_to 'Back', bus_operators_path

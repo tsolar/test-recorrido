@@ -1,0 +1,33 @@
+h1 Listing bus_operators
+= react_component("BusOperatorSearch", { busOperators: @bus_operators })
+/table
+  thead
+    tr
+      th Internal name
+      th Official name
+      th Recorrido
+      th Average rating
+      th Slug
+      th Icons
+      th Images
+      th Description
+      th
+      th
+      th
+
+  tbody
+    - @bus_operators.each do |bus_operator|
+      tr
+        td = bus_operator.internal_name
+        td = bus_operator.official_name
+        td = bus_operator.recorrido_id
+        td = bus_operator.average_rating
+        td = bus_operator.slug
+        td = bus_operator.icons
+        td = bus_operator.images
+        td = bus_operator.description
+        td = link_to 'Show', bus_operator
+        td = link_to 'Edit', edit_bus_operator_path(bus_operator)
+        td = link_to 'Destroy', bus_operator, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
