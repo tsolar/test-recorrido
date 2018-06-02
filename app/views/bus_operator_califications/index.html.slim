@@ -1,0 +1,19 @@
+h1
+  | Calificaciones de #{@bus_operator}
+
+  - if @bus_operator_califications.any?
+    ul
+      - @bus_operator_califications.each do |bus_operator_calification|
+        li
+          p
+            = BusOperatorCalification.human_attribute_name(:rating)
+            | :
+            =< bus_operator_calification.rating
+          p
+            = BusOperatorCalification.human_attribute_name(:comment)
+            | :
+            =< bus_operator_calification.comment
+
+br
+
+= link_to "Ver #{@bus_operator}", @bus_operator

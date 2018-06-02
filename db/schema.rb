@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_02_033008) do
+ActiveRecord::Schema.define(version: 2018_06_02_171916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bus_operator_califications", force: :cascade do |t|
+    t.bigint "bus_operator_id"
+    t.integer "rating"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bus_operator_id"], name: "index_bus_operator_califications_on_bus_operator_id"
+  end
 
   create_table "bus_operators", force: :cascade do |t|
     t.string "internal_name"
@@ -28,4 +37,5 @@ ActiveRecord::Schema.define(version: 2018_06_02_033008) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "bus_operator_califications", "bus_operators"
 end

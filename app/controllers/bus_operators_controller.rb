@@ -10,6 +10,7 @@ class BusOperatorsController < ApplicationController
   # GET /bus_operators/1
   # GET /bus_operators/1.json
   def show
+    @bus_operator_calification = BusOperatorCalification.new
   end
 
   # GET /bus_operators/new

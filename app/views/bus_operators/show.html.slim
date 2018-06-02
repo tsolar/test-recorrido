@@ -9,6 +9,17 @@ p
   strong> Description:
   = @bus_operator.description
 
+= simple_form_for(@bus_operator_calification, url: bus_operator_califications_path(bus_operator_id: @bus_operator.to_param)) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :rating, collection: (1..5).to_a
+    = f.input :comment
+
+  .form-actions
+    = f.button :submit
+
 => link_to 'Edit', edit_bus_operator_path(@bus_operator)
 '|
 =< link_to 'Back', bus_operators_path
