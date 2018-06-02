@@ -37,6 +37,7 @@ gem "slim-rails"
 gem "react-rails"
 gem "simple_form"
 gem "kaminari"
+gem "bootstrap4-kaminari-views"
 gem "httparty"
 
 # Reduces boot times through caching; required in config/boot.rb

@@ -13,7 +13,11 @@ h1
           = BusOperatorCalification.human_attribute_name(:comment)
           | :
           span< = bus_operator_calification.comment
+  = paginate @bus_operator_califications, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm justify-content-center"
 
+- else
+  p
+    | Aún no hay calificaciones
 br
 
 = link_to "Ver #{@bus_operator}", @bus_operator

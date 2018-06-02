@@ -22,4 +22,6 @@ p
 
 => link_to 'Edit', edit_bus_operator_path(@bus_operator)
 '|
-=< link_to 'Back', bus_operators_path
+=<> link_to 'Ver calificaciones', bus_operator_califications_path(bus_operator_id: @bus_operator.to_param)
+'|
+=<> link_to 'Back', bus_operators_path

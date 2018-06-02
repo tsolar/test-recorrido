@@ -125,7 +125,7 @@ class BusOperatorSearch extends React.Component {
                           pageRangeDisplayed={5}
                           onPageChange={this.handlePageClick}
                           forcePage={currentPage}
-                          containerClassName={"pagination"}
+                          containerClassName={"pagination justify-content-center"}
                           subContainerClassName={"pages pagination"}
                           activeClassName={"active"}
                           pageClassName={"page-item"}
@@ -149,10 +149,10 @@ class BusOperatorSearch extends React.Component {
               <a className="dropdown-item" onClick={() => this.orderByRating(1)}>Calificación</a>
             </div>
           </div>
-          <p>
+          <div>
             Ordenando por {this.currentOrderLabel()}.
             {this.currentResultsText()}
-          </p>
+          </div>
         </div>
         {this.renderBusOperatorList()}
       </div>

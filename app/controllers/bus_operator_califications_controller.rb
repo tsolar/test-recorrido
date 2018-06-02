@@ -4,7 +4,7 @@ class BusOperatorCalificationsController < ApplicationController
   # GET /bus_operator_califications
   # GET /bus_operator_califications.json
   def index
-    @bus_operator_califications = BusOperatorCalification.where(bus_operator: @bus_operator)
+    @bus_operator_califications = BusOperatorCalification.where(bus_operator: @bus_operator).page(params[:page]).per(20)
   end
 
   # POST /bus_operator_califications
