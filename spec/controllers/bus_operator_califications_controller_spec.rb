@@ -29,11 +29,11 @@ RSpec.describe BusOperatorCalificationsController, type: :controller do
   # BusOperatorCalification. As you add validations to BusOperatorCalification, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    FactoryBot.attributes_for(:bus_operator_calification)
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    FactoryBot.attributes_for(:bus_operator_calification, :invalid)
   }
 
   # This should return the minimal set of values that should be in the session
@@ -41,101 +41,114 @@ RSpec.describe BusOperatorCalificationsController, type: :controller do
   # BusOperatorCalificationsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  let!(:bus_operator) { BusOperator.last || FactoryBot.create(:bus_operator) }
+
+  let(:expect_render_404) {
+    expect(response.status).to eq 404
+    expect(response).to render_template(file: "#{Rails.root}/public/404.html")
+  }
+
   describe "GET #index" do
-    it "returns a success response" do
-      bus_operator_calification = BusOperatorCalification.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(response).to be_success
+    let(:bus_operator_calification) {
+      BusOperatorCalification.create! valid_attributes
+    }
+
+    context "when bus operator does not exist" do
+      it "returns a not found response" do
+        get :index, params: { bus_operator_id: 0 }, session: valid_session
+        expect_render_404
+      end
+    end
+
+    context "when bus operator does exist" do
+      it "returns a success response" do
+        get :index, params: { bus_operator_id: bus_operator.to_param }, session: valid_session
+        expect(response.status).to eq 200
+        expect(assigns(:bus_operator_califications)).to eq [bus_operator_calification]
+      end
     end
   end
 
   describe "GET #show" do
-    it "returns a success response" do
-      bus_operator_calification = BusOperatorCalification.create! valid_attributes
-      get :show, params: {id: bus_operator_calification.to_param}, session: valid_session
-      expect(response).to be_success
+    let(:bus_operator_calification) {
+      BusOperatorCalification.create! valid_attributes
+    }
+
+    it "raises no routes matches error" do
+      expect {
+        get :show, params: { bus_operator_id: bus_operator.to_param, id: bus_operator_calification.to_param }, session: valid_session
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
 
   describe "GET #new" do
-    it "returns a success response" do
-      get :new, params: {}, session: valid_session
-      expect(response).to be_success
+    it "raises no routes matches error" do
+      expect {
+        get :new, params: { bus_operator_id: bus_operator.to_param }, session: valid_session
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
 
   describe "GET #edit" do
-    it "returns a success response" do
+    it "raises no routes matches error" do
       bus_operator_calification = BusOperatorCalification.create! valid_attributes
-      get :edit, params: {id: bus_operator_calification.to_param}, session: valid_session
-      expect(response).to be_success
+      expect {
+        get :edit, params: {id: bus_operator_calification.to_param}, session: valid_session
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
 
   describe "POST #create" do
-    context "with valid params" do
-      it "creates a new BusOperatorCalification" do
-        expect {
-          post :create, params: {bus_operator_calification: valid_attributes}, session: valid_session
-        }.to change(BusOperatorCalification, :count).by(1)
-      end
-
-      it "redirects to the created bus_operator_calification" do
-        post :create, params: {bus_operator_calification: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(BusOperatorCalification.last)
+    context "when bus operator does not exist" do
+      it "returns a not found response" do
+        post :create, params: { bus_operator_id: 0, bus_operator_calification: valid_attributes }, session: valid_session
+        expect_render_404
       end
     end
 
-    context "with invalid params" do
-      it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {bus_operator_calification: invalid_attributes}, session: valid_session
-        expect(response).to be_success
+    context "when bus operator exists" do
+      context "with valid params" do
+        it "creates a new BusOperatorCalification" do
+          expect {
+            post :create, params: { bus_operator_id: bus_operator.to_param, bus_operator_calification: valid_attributes }, session: valid_session
+          }.to change(BusOperatorCalification, :count).by(1)
+
+          # check the last one's bus operator is the current one
+          expect(BusOperatorCalification.last.bus_operator).to eq bus_operator
+        end
+
+        it "redirects to the created bus_operator_calification" do
+          post :create, params: { bus_operator_id: bus_operator.to_param, bus_operator_calification: valid_attributes }, session: valid_session
+          expect(response).to redirect_to(bus_operator_califications_path)
+        end
+      end
+
+      context "with invalid params" do
+        it "returns a success response (renders again bus operator show template)" do
+          post :create, params: { bus_operator_id: bus_operator.to_param, bus_operator_calification: invalid_attributes }, session: valid_session
+          expect(response.status).to eq 200
+          expect(response).to render_template("bus_operators/show")
+        end
       end
     end
   end
 
   describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested bus_operator_calification" do
-        bus_operator_calification = BusOperatorCalification.create! valid_attributes
-        put :update, params: {id: bus_operator_calification.to_param, bus_operator_calification: new_attributes}, session: valid_session
-        bus_operator_calification.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the bus_operator_calification" do
-        bus_operator_calification = BusOperatorCalification.create! valid_attributes
-        put :update, params: {id: bus_operator_calification.to_param, bus_operator_calification: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(bus_operator_calification)
-      end
-    end
-
-    context "with invalid params" do
-      it "returns a success response (i.e. to display the 'edit' template)" do
-        bus_operator_calification = BusOperatorCalification.create! valid_attributes
-        put :update, params: {id: bus_operator_calification.to_param, bus_operator_calification: invalid_attributes}, session: valid_session
-        expect(response).to be_success
-      end
+    it "raises no routes matches error" do
+      bus_operator_calification = BusOperatorCalification.create! valid_attributes
+      new_attributes = { rating: 4.5, comment: "any comment" }
+      expect {
+        put :update, params: { bus_operator_id: bus_operator.to_param, id: bus_operator_calification.to_param, bus_operator_calification: new_attributes}, session: valid_session
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested bus_operator_calification" do
+    it "raises no routes matches error" do
       bus_operator_calification = BusOperatorCalification.create! valid_attributes
       expect {
-        delete :destroy, params: {id: bus_operator_calification.to_param}, session: valid_session
-      }.to change(BusOperatorCalification, :count).by(-1)
-    end
-
-    it "redirects to the bus_operator_califications list" do
-      bus_operator_calification = BusOperatorCalification.create! valid_attributes
-      delete :destroy, params: {id: bus_operator_calification.to_param}, session: valid_session
-      expect(response).to redirect_to(bus_operator_califications_url)
+        delete :destroy, params: {bus_operator_id: bus_operator.to_param, id: bus_operator_calification.to_param}, session: valid_session
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
-
 end

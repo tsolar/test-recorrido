@@ -10,7 +10,7 @@ RSpec.describe "bus_operators/edit", type: :view do
       :slug => "MyString",
       :icons => "MyText",
       :images => "MyText",
-      :description => "MyText"
+      :description => ""
     ))
   end
 
@@ -18,20 +18,6 @@ RSpec.describe "bus_operators/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", bus_operator_path(@bus_operator), "post" do
-
-      assert_select "input[name=?]", "bus_operator[internal_name]"
-
-      assert_select "input[name=?]", "bus_operator[official_name]"
-
-      assert_select "input[name=?]", "bus_operator[recorrido_id]"
-
-      assert_select "input[name=?]", "bus_operator[average_rating]"
-
-      assert_select "input[name=?]", "bus_operator[slug]"
-
-      assert_select "textarea[name=?]", "bus_operator[icons]"
-
-      assert_select "textarea[name=?]", "bus_operator[images]"
 
       assert_select "textarea[name=?]", "bus_operator[description]"
     end

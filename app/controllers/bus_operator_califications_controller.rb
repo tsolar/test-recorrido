@@ -28,6 +28,8 @@ class BusOperatorCalificationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_bus_operator
       @bus_operator = BusOperator.find(params[:bus_operator_id])
+    rescue
+      render_404
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

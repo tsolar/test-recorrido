@@ -29,11 +29,11 @@ RSpec.describe BusOperatorsController, type: :controller do
   # BusOperator. As you add validations to BusOperator, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    FactoryBot.attributes_for(:bus_operator)
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    FactoryBot.attributes_for(:bus_operator, :invalid)
   }
 
   # This should return the minimal set of values that should be in the session
@@ -45,7 +45,7 @@ RSpec.describe BusOperatorsController, type: :controller do
     it "returns a success response" do
       bus_operator = BusOperator.create! valid_attributes
       get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      expect(response.status).to eq 200
     end
   end
 
@@ -53,14 +53,15 @@ RSpec.describe BusOperatorsController, type: :controller do
     it "returns a success response" do
       bus_operator = BusOperator.create! valid_attributes
       get :show, params: {id: bus_operator.to_param}, session: valid_session
-      expect(response).to be_success
+      expect(response.status).to eq 200
     end
   end
 
   describe "GET #new" do
-    it "returns a success response" do
-      get :new, params: {}, session: valid_session
-      expect(response).to be_success
+    it "raises no routes matches error" do
+      expect {
+        get :new, params: {}, session: valid_session
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
 
@@ -68,43 +69,32 @@ RSpec.describe BusOperatorsController, type: :controller do
     it "returns a success response" do
       bus_operator = BusOperator.create! valid_attributes
       get :edit, params: {id: bus_operator.to_param}, session: valid_session
-      expect(response).to be_success
+      expect(response.status).to eq 200
     end
   end
 
   describe "POST #create" do
-    context "with valid params" do
-      it "creates a new BusOperator" do
-        expect {
-          post :create, params: {bus_operator: valid_attributes}, session: valid_session
-        }.to change(BusOperator, :count).by(1)
-      end
-
-      it "redirects to the created bus_operator" do
+    it "raises no routes matches error" do
+      expect {
         post :create, params: {bus_operator: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(BusOperator.last)
-      end
-    end
-
-    context "with invalid params" do
-      it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {bus_operator: invalid_attributes}, session: valid_session
-        expect(response).to be_success
-      end
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
 
   describe "PUT #update" do
     context "with valid params" do
+      let(:description) { FFaker::Lorem.paragraph }
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { description: description }
       }
 
       it "updates the requested bus_operator" do
         bus_operator = BusOperator.create! valid_attributes
+        expect(bus_operator.description).to be_nil
+
         put :update, params: {id: bus_operator.to_param, bus_operator: new_attributes}, session: valid_session
         bus_operator.reload
-        skip("Add assertions for updated state")
+        expect(bus_operator.description).to eq new_attributes[:description]
       end
 
       it "redirects to the bus_operator" do
@@ -118,24 +108,18 @@ RSpec.describe BusOperatorsController, type: :controller do
       it "returns a success response (i.e. to display the 'edit' template)" do
         bus_operator = BusOperator.create! valid_attributes
         put :update, params: {id: bus_operator.to_param, bus_operator: invalid_attributes}, session: valid_session
-        expect(response).to be_success
+        expect(response).to redirect_to(bus_operator)
+        # expect(response.status).to eq 200
       end
     end
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested bus_operator" do
+    it "raises no routes matches error" do
       bus_operator = BusOperator.create! valid_attributes
       expect {
         delete :destroy, params: {id: bus_operator.to_param}, session: valid_session
-      }.to change(BusOperator, :count).by(-1)
-    end
-
-    it "redirects to the bus_operators list" do
-      bus_operator = BusOperator.create! valid_attributes
-      delete :destroy, params: {id: bus_operator.to_param}, session: valid_session
-      expect(response).to redirect_to(bus_operators_url)
+      }.to raise_error ActionController::UrlGenerationError
     end
   end
-
 end

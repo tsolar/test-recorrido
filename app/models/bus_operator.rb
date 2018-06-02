@@ -1,4 +1,7 @@
 class BusOperator < ApplicationRecord
+  validates :official_name, presence: true
+  validates :recorrido_id, presence: true
+
   serialize :icons
   serialize :images
 
