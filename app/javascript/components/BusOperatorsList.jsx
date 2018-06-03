@@ -24,9 +24,9 @@ class BusOperatorsList extends React.Component {
 
     return (
       <React.Fragment>
-        <ul className="bus-operators-list">
+        <div className="bus-operators-list list-group">
           { busOperatorsList }
-        </ul>
+        </div>
       </React.Fragment>
     );
   }

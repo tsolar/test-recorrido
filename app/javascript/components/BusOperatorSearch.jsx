@@ -102,6 +102,7 @@ class BusOperatorSearch extends React.Component {
     return (
       <div>
         <BusOperatorsList busOperators={this.state.busOperators} />
+        <br />
         {this.renderPagination()}
       </div>
     )
@@ -139,19 +140,23 @@ class BusOperatorSearch extends React.Component {
   render () {
     return (
       <div>
-        <div className="filters">
-          <div className="btn-group" role="group">
-            <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Ordenar por
-            </button>
-            <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a className="dropdown-item" onClick={() => this.orderByName(1)}>Nombre</a>
-              <a className="dropdown-item" onClick={() => this.orderByRating(1)}>Calificación</a>
+        <div className="filters row">
+          <div className="col-xs-12 col-sm-6">
+            <div className="btn-group" role="group">
+              <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Ordenar por
+              </button>
+              <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a className="dropdown-item" onClick={() => this.orderByName(1)}>Nombre</a>
+                <a className="dropdown-item" onClick={() => this.orderByRating(1)}>Calificación</a>
+              </div>
             </div>
           </div>
-          <div>
-            Ordenando por {this.currentOrderLabel()}.
-            {this.currentResultsText()}
+          <div className="col-xs-12 col-sm-6 float-right">
+            <div className="text-right">
+              Ordenando por {this.currentOrderLabel()}
+              {this.currentResultsText()}
+            </div>
           </div>
         </div>
         {this.renderBusOperatorList()}

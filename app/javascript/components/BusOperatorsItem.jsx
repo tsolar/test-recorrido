@@ -12,33 +12,30 @@ const AverageRating = props => {
 class BusOperatorsItem extends React.Component {
   render () {
     return (
-      <li className="row">
-        <div className="col-xs-12 col-sm-3 col-lg-2 ">
-          <img alt={this.props.busOperator.official_name} src={this.props.busOperator.icons.thumb} />
-        </div>
-        <div className="col-xs-12 col-sm-3 col-lg-4 ">
-          <p className="official_name">
-            <a href={`/bus_operators/${this.props.busOperator.id}`}>
-              {this.props.busOperator.official_name}
-            </a>
-          </p>
-        </div>
-        <div className="col-xs-12 col-sm-3">
-          <p className="average-rating">
-            <AverageRating rating={this.props.busOperator.average_rating} />
-          </p>
-        </div>
-        <div className="col-xs-12 col-sm-3">
-          <div className="row">
-            <div className="col">
-              <a href={`/bus_operators/${this.props.busOperator.id}`}>Ver</a>
-            </div>
-            <div className="col">
-              <a href={`/bus_operators/${this.props.busOperator.id}/edit`}>Editar</a>
-            </div>
+      <div className="list-group-item">
+        <div className="row">
+          <div className="col-xs-12 col-sm-3 col-lg-2">
+            <img alt={this.props.busOperator.official_name} src={this.props.busOperator.icons.thumb} />
           </div>
+          <div className="col-xs-12 col-sm-3 col-lg-4">
+            <h5>
+              {this.props.busOperator.official_name}
+            </h5>
+            <small>
+              <AverageRating rating={this.props.busOperator.average_rating} />
+            </small>
+          </div>
+          <div className="col-xs-12 col-sm-3 col-lg-4">
+            <p>
+              {this.props.busOperator.description}
+            </p>
+          </div>
+          <small>
+            <a className="btn btn-link" href={`/bus_operators/${this.props.busOperator.id}`}>Ver</a>
+            <a className="btn btn-link" href={`/bus_operators/${this.props.busOperator.id}/edit`}>Editar</a>
+          </small>
         </div>
-      </li>
+      </div>
     );
   }
 }
