@@ -1,9 +1,19 @@
 import React from "react"
 import PropTypes from "prop-types"
+import ReactStars from 'react-stars'
 
 const AverageRating = props => {
   if(props.rating || props.rating == 0) {
-    return <span>{props.rating} de 5</span>
+    return (
+      <div>
+        <ReactStars
+          edit={false}
+          value={props.rating}
+          size={20}
+        />
+        <span>{props.rating} de 5</span>
+      </div>
+    )
   } else {
     return null;
   }
