@@ -5,12 +5,14 @@ RSpec.describe "bus_operator_califications/index", type: :view do
   before(:each) do
     assign(
       :bus_operator_califications,
-      FactoryBot.create_list(
-        :bus_operator_calification,
-        2,
-        rating: 3,
-        bus_operator_id: bus_operator.id
-      )
+      Kaminari.paginate_array(
+        FactoryBot.create_list(
+          :bus_operator_calification,
+          2,
+          rating: 3,
+          bus_operator_id: bus_operator.id
+        )
+      ).page(1)
     )
     assign(:bus_operator, bus_operator)
   end

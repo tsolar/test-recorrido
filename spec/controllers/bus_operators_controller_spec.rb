@@ -43,7 +43,6 @@ RSpec.describe BusOperatorsController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      bus_operator = BusOperator.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response.status).to eq 200
     end
@@ -109,7 +108,6 @@ RSpec.describe BusOperatorsController, type: :controller do
         bus_operator = BusOperator.create! valid_attributes
         put :update, params: {id: bus_operator.to_param, bus_operator: invalid_attributes}, session: valid_session
         expect(response).to redirect_to(bus_operator)
-        # expect(response.status).to eq 200
       end
     end
   end
@@ -120,6 +118,181 @@ RSpec.describe BusOperatorsController, type: :controller do
       expect {
         delete :destroy, params: {id: bus_operator.to_param}, session: valid_session
       }.to raise_error ActionController::UrlGenerationError
+    end
+  end
+
+  describe "GET search" do
+    let(:format) { :json }
+    let(:page) { 1 }
+    let(:params) {
+      {
+        format: format,
+        page: page
+      }
+    }
+    let(:expected_total_count) { 0 }
+    let(:expected_data) { [] }
+    let(:expected_page) { page }
+    let(:expected_json) {
+      {
+        data: expected_data,
+        totalCount: expected_total_count,
+        page: expected_page
+      }.to_json
+    }
+    let(:create_bus_operators) {}
+
+    before :each do
+      create_bus_operators
+      get :search, params: params, session: valid_session
+    end
+
+    context "when format is html" do
+      let(:format) { :html }
+
+      it "returns a not acceptable response" do
+        expect(response.status).to eq 406
+      end
+    end
+
+    context "when format is json" do
+      it "returns a success response" do
+        expect(response.status).to eq 200
+      end
+
+      context "when there's no bus_operators" do
+        it "should return a json with 0 results" do
+        end
+      end
+
+      context "when there are bus_operators" do
+        let(:bus_operators_count) { 1 }
+        let(:expected_total_count) { 1 }
+        let(:expected_data) {
+          BusOperator.all.page(page).per(20)
+        }
+        let(:create_bus_operators) {
+          FactoryBot.create_list(:bus_operator, bus_operators_count)
+        }
+
+        context "when there's only one bus_operator" do
+          it "should return a json with 1 result" do
+          end
+        end
+
+        # let's test the order only with 3 bus operators, one with rating nil
+        context "when there's 3 bus operators" do
+          let(:bus_operators_count) { 3 }
+          let(:expected_total_count) { 3 }
+          let(:bus_operator1) {
+            FactoryBot.create(
+              :bus_operator,
+              official_name: "Andesmar",
+              average_rating: 1.5
+            )
+          }
+          let(:bus_operator2) {
+            FactoryBot.create(
+              :bus_operator,
+              official_name: "Talca, París y Londres",
+              average_rating: 3.5
+            )
+          }
+          let(:bus_operator3) {
+            FactoryBot.create(
+              :bus_operator,
+              official_name: "Bus-Sur",
+              average_rating: nil
+            )
+          }
+
+          let(:create_bus_operators) {
+            bus_operator1
+            bus_operator2
+            bus_operator3
+          }
+
+          context "when is no order set" do
+            it "should return a json with 3 results ordered by id" do
+              expect(expected_data.count).to eq 3
+              expect(expected_data.first).to eq bus_operator1
+              expect(expected_data.second).to eq bus_operator2
+              expect(expected_data.last).to eq bus_operator3
+            end
+          end
+
+          context "when order is by name" do
+            let(:params) {
+              {
+                format: format,
+                page: page,
+                order_by_name: nil
+              }
+            }
+            let(:expected_data) {
+              BusOperator.all.order(official_name: :asc).page(page).per(20)
+            }
+
+            it "should return a json with 3 results ordered by name" do
+              expect(expected_data.count).to eq 3
+              expect(expected_data.first).to eq bus_operator1
+              expect(expected_data.second).to eq bus_operator3
+              expect(expected_data.last).to eq bus_operator2
+            end
+          end
+
+          context "when order is by calification" do
+            let(:params) {
+              {
+                format: format,
+                page: page,
+                order_by_rating: nil
+              }
+            }
+            let(:expected_data) {
+              BusOperator.all.order("average_rating desc nulls last").page(page).per(20)
+            }
+            it "should return a json with 3 results ordred by rating and operator3 should be at last" do
+              expect(expected_data.count).to eq 3
+              expect(expected_data.first).to eq bus_operator2
+              expect(expected_data.second).to eq bus_operator1
+              expect(expected_data.last).to eq bus_operator3
+            end
+          end
+        end
+
+        context "when there's 21 bus_operators (more than 20)" do
+          let(:bus_operators_count) { 21 }
+          let(:expected_total_count) { 21 }
+
+          context "and when page is 0" do
+            let(:page) { 0 }
+            let(:expected_page) { 1 }
+
+            it "should return a json with 20 results and page 1" do
+              expect(expected_data.count).to eq 20
+            end
+          end
+
+          context "and when page is 1" do
+            it "should return a json with 20 results" do
+              expect(expected_data.count).to eq 20
+            end
+          end
+
+          context "and when page is 2" do
+            let(:page) { 2 }
+
+            it "should return a json with 1 results" do
+              expect(expected_data.count).to eq 1
+            end
+          end
+        end
+      end
+
+      after :each do
+        expect(response.body).to eq expected_json
+      end
     end
   end
 end

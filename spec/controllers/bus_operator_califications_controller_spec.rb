@@ -49,8 +49,14 @@ RSpec.describe BusOperatorCalificationsController, type: :controller do
   }
 
   describe "GET #index" do
-    let(:bus_operator_calification) {
-      BusOperatorCalification.create! valid_attributes
+    let(:califications_qty) { 2 }
+    let!(:bus_operator_califications) {
+      FactoryBot.create_list(
+        :bus_operator_calification,
+        califications_qty,
+        bus_operator_id:
+        bus_operator.to_param
+      )
     }
 
     context "when bus operator does not exist" do
@@ -61,10 +67,59 @@ RSpec.describe BusOperatorCalificationsController, type: :controller do
     end
 
     context "when bus operator does exist" do
+      # expect the same califications quantity by default
+      let(:expected_califications_qty) { califications_qty }
+      # expect the same califications by default
+      let(:expected_califications) { bus_operator_califications }
+      # ask for page 1 by default
+      let(:page) { 1 }
+
+      before :each do
+        get :index, params: { bus_operator_id: bus_operator.to_param, page: page }, session: valid_session
+      end
+
       it "returns a success response" do
-        get :index, params: { bus_operator_id: bus_operator.to_param }, session: valid_session
         expect(response.status).to eq 200
-        expect(assigns(:bus_operator_califications)).to eq [bus_operator_calification]
+      end
+
+      context "when there are 10 califications (less than 20)" do
+        let(:califications_qty) { 10 }
+        let(:expected_califications_qty) { 10 }
+
+        it "should assign 10 califications to bus_operator_califications" do end
+      end
+
+      context "when there are 20 califications (exactly 20)" do
+        let(:califications_qty) { 20 }
+        let(:expected_califications_qty) { 20 }
+
+        it "should assign 20 califications to bus_operator_califications" do end
+      end
+
+      context "when there are 21 califications (more than 20)" do
+        let(:califications_qty) { 21 }
+
+        # expect only the first 20 (all minus the last)
+        let(:expected_califications_qty) { 20 }
+        let(:expected_califications) { bus_operator_califications.first(20) }
+
+        it "should assign 20 califications to bus_operator_califications" do end
+
+        context "when page is 2" do
+          let(:page) { 2 }
+          # expect only the last one
+          let(:expected_califications_qty) { 1 }
+          let(:expected_califications) { [bus_operator_califications.last] }
+
+          it "should assign the last calification to bus_operator_califications" do end
+        end
+      end
+
+      after :each do
+        expect(assigns(:bus_operator_califications)).to eq expected_califications
+
+        # califications are paginated. They should be 20 or less
+        expect(assigns(:bus_operator_califications).count).to eq expected_califications_qty
       end
     end
   end
