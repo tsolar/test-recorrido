@@ -43,6 +43,7 @@ RSpec.describe BusOperatorsController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
+      expect(BusOperator).to receive(:load_from_recorrido).once.and_call_original
       get :index, params: {}, session: valid_session
       expect(response.status).to eq 200
     end

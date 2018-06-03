@@ -19,6 +19,7 @@ class BusOperatorSearch extends React.Component {
   }
 
   componentDidMount() {
+    // by default, the order is by name
     this.orderByName(1);
   }
 
@@ -34,7 +35,7 @@ class BusOperatorSearch extends React.Component {
   }
 
   currentResultsText() {
-    // si aún no se setea currentPage, no se muestra
+    // if currentPage is not set, do not show anything
     if(!this.state.currentPage) { return null }
 
     const firstResult = ((this.state.currentPage - 1) * 20) + 1;
@@ -76,7 +77,7 @@ class BusOperatorSearch extends React.Component {
   }
 
   handlePageClick(data) {
-    // como considera la primera página como 0, hay que sumarle 1 para obtener la página correcta
+    // since first page is 0, add 1 to show correct page
     const page = data.selected + 1;
     switch(this.state.currentOrder) {
       case "name":
@@ -92,7 +93,7 @@ class BusOperatorSearch extends React.Component {
 
   renderBusOperatorList() {
     if(this.state.totalCount === 0) {
-      // si totalCount está en 0, no hay ninguno; si no es un número, aún no han cargado
+      // if totalCount is 0, there's anyone. If it's not a number, it's not loaded yet
       return (
         <React.Fragment>
           <p>No hay operador de buses alguno.</p>
@@ -110,11 +111,11 @@ class BusOperatorSearch extends React.Component {
 
   renderPagination() {
     if(!this.state.totalCount) {
-      // no mostrar mientras carga, ya que totalCount no está seteado aún
+      // do not show anything yet, since totalCount is not set yet
       return null
     }
 
-    // ReactPaginate considera la primera página como 0
+    // ReactPaginate considers first page as 0
     const currentPage = this.state.currentPage - 1;
 
     return <ReactPaginate previousLabel={"<"}

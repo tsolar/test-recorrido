@@ -10,7 +10,7 @@ class BusOperator < ApplicationRecord
   end
 
   def self.load_from_recorrido
-    # begin
+    begin
       bus_operators_response = HTTParty.get("https://www.recorrido.cl/api/v2/es/bus_operators.json")
       bus_operators_parsed_response = JSON.parse(bus_operators_response.body)
       bus_operators_from_recorrido = bus_operators_parsed_response["bus_operators"]
@@ -28,8 +28,8 @@ class BusOperator < ApplicationRecord
         end
       end
       all.order(official_name: :asc)
-    # rescue
-      # self.all
-    # end
+    rescue
+      all.order(official_name: :asc)
+    end
   end
 end

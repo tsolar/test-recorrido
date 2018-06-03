@@ -1,0 +1,29 @@
+{
+  "bus_operators": [
+    {
+      "id": 52,
+      "internal_name": "talca_paris_londres",
+      "official_name": "Talca Paris y Londres",
+      "bookable": true,
+      "phone": "+56 71 221 1010",
+      "allows_e_ticketing": true,
+      "average_rating": 4.3,
+      "promotion_text": "",
+      "change_date_policy": "Se puede cambiar la fecha y hora de los pasajes con una anticipación de 2 horas directamente en agencias de Talca Paris y Londres, no en internet.",
+      "icons": {
+        "bigger": "https://imagenes.recorrido.cl/logotipos/talca-paris-y-londres/logo/talca-paris-y-londres-logo-52.png?1473083365",
+        "medium": "https://imagenes.recorrido.cl/logotipos/talca-paris-y-londres/logo/talca-paris-y-londres-logo-52.png?1473083365",
+        "thumb": "https://imagenes.recorrido.cl/logotipos/talca-paris-y-londres/icono/talca-paris-y-londres-logo-52.png?1473083365",
+        "updated_at": "2016-09-05T10:49:25.472-03:00"
+      },
+      "images": {
+        "mdpi": "https://imagenes.recorrido.cl/bus_operators/images/52/mdpi/TPL.png?1456154563",
+        "hdpi": "https://imagenes.recorrido.cl/bus_operators/images/52/hdpi/TPL.png?1456154563",
+        "xhdpi": "https://imagenes.recorrido.cl/bus_operators/images/52/xhdpi/TPL.png?1456154563",
+        "ios2x": "https://imagenes.recorrido.cl/bus_operators/images/52/ios2x/TPL.png?1456154563",
+        "ios3x": "https://imagenes.recorrido.cl/bus_operators/images/52/ios3x/TPL.png?1456154563",
+        "updated_at": "2016-02-22T12:22:43.284-03:00"
+      }
+    }
+  ]
+}

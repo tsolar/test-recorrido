@@ -6,6 +6,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'webmock/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -64,6 +65,11 @@ RSpec.configure do |config|
 
   # to prevent ActiveRecord::AssociationTypeMismatch when running tests
   config.before(:suite) { FactoryBot.reload }
+
+  # allow net connection if not using webmock
+  config.before :each do |args|
+    WebMock.allow_net_connect! unless args.metadata[:webmock].present?
+  end
 end
 
 Shoulda::Matchers.configure do |config|

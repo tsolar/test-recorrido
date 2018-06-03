@@ -39,6 +39,7 @@ gem "simple_form"
 gem "kaminari"
 gem "bootstrap4-kaminari-views"
 gem "httparty"
+gem "webmock"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
