@@ -1,0 +1,10 @@
+en:
+  activerecord:
+    models:
+      bus_operator:
+        one: Bus operator
+        other: Bus operators
+    attributes:
+      bus_operator:
+        description: Description
+        average_rating: Average rating

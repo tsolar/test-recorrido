@@ -1,0 +1,10 @@
+en:
+  activerecord:
+    models:
+      bus_operator_calification:
+        one: Bus operator calification
+        other: Bus operator califications
+    attributes:
+      bus_operator:
+        comment: Comment
+        rating: Rating

@@ -1,0 +1,10 @@
+es:
+  activerecord:
+    models:
+      bus_operator_calification:
+        one: Calificación
+        other: Calificaciones
+    attributes:
+      bus_operator_calification:
+        comment: Comentario
+        rating: Nota

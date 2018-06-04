@@ -1,27 +1,35 @@
-/p#notice = notice
-
 h1
   = @bus_operator.official_name
-p
-  strong> Average rating:
-  = @bus_operator.average_rating
-p
-  strong> Description:
-  = @bus_operator.description
 
+.row
+  .col-xs-12.col-sm-6
+    img src="#{@bus_operator.images['hdpi']}" alt="#{@bus_operator.official_name}" class="img-fluid rounded"
+  .col-xs-12.col-sm-6
+    p
+      strong>
+        = BusOperator.human_attribute_name(:average_rating)
+        | :
+      = @bus_operator.average_rating
+    p
+      strong>
+        = BusOperator.human_attribute_name(:description)
+        | :
+      = @bus_operator.description
+
+h3 = t('actions.rate')
 = simple_form_for(@bus_operator_calification, url: bus_operator_califications_path(bus_operator_id: @bus_operator.to_param)) do |f|
   = f.error_notification
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
-    = f.input :rating, collection: (1..5).to_a
+    = f.input :rating, collection: (1..5).to_a, include_blank: t("actions.select_rating")
     = f.input :comment
 
   .form-actions
     = f.button :submit
 
-=> link_to 'Edit', edit_bus_operator_path(@bus_operator)
+=> link_to t('actions.edit'), edit_bus_operator_path(@bus_operator)
 '|
-=<> link_to 'Ver calificaciones', bus_operator_califications_path(bus_operator_id: @bus_operator.to_param)
+=<> link_to "#{t('actions.show')} #{BusOperatorCalification.model_name.human(count: 2).downcase}", bus_operator_califications_path(bus_operator_id: @bus_operator.to_param)
 '|
-=<> link_to 'Back', bus_operators_path
+=<> link_to t('actions.back'), bus_operators_path

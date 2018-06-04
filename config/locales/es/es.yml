@@ -29,7 +29,7 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
+es:
   views:
     pagination:
       first: "&laquo;"
@@ -38,8 +38,8 @@ en:
       next: "&rsaquo;"
       truncate: "&hellip;"
   actions:
-    edit: Edit
-    show: Show
-    back: Back
-    rate: Rate
-    select_rating: Select rating
+    edit: Editar
+    show: Ver
+    back: Volver
+    rate: Calificar
+    select_rating: Ingrese nota

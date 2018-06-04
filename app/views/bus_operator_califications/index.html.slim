@@ -2,7 +2,7 @@ h1
   | Calificaciones de #{@bus_operator}
 
 - if @bus_operator_califications.any?
-  ul
+  ul.bus-operator-califications
     - @bus_operator_califications.each do |bus_operator_calification|
       li
         p

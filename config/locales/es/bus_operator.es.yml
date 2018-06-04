@@ -1,0 +1,10 @@
+es:
+  activerecord:
+    models:
+      bus_operator:
+        one: Operador de buses
+        other: Operadores de buses
+    attributes:
+      bus_operator:
+        description: Descripción
+        average_rating: Nota promedio
