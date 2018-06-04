@@ -1,24 +1,54 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+In order to run this project on your machine you will need
 
-Things you may want to cover:
+* Ruby 2.5.1
+* PostgreSQL (any version after 9.6 should work)
+* Yarn (check install instructions at https://yarnpkg.com/lang/en/docs/install)
+* Git (of course...)
+* RubyGems (be able to run `gem` command in order to install Ruby gems)
 
-* Ruby version
+After being sure you have these requirements, you should run the following commands
 
-* System dependencies
+* Clone the project
 
-* Configuration
+```
+git clone https://github.com/tsolar/test-recorrido.git
+```
 
-* Database creation
+* Go to project's directory
 
-* Database initialization
+```
+cd test-recorrido
+```
 
-* How to run the test suite
+* Install bundler and install gems
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+gem install bundler
+bundle install
+```
 
-* Deployment instructions
+* Install javascript dependencies
 
-* ...
+```
+yarn install
+```
+
+* Create database and run migrations
+
+```
+rails db:create db:migrate
+```
+
+* Now you should be able to run the project using `foreman`
+
+```
+foreman start -f Procfile.dev
+```
+
+To run the test suite you can run
+
+```
+rspec
+```
